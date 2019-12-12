@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title></title>
+	<style type="text/css">
+	*{
+			margin:0px;
+			padding:0px;
+		}
+		#top{
+			height:24px;
+			background-color:#eee;
+		}
+		#top-1{
+			height:24px;
+			margin:0 auto;
+			width:900px;
+		}
+		#warn{
+			float:left;
+			margin-top:2px;
+			margin-right:5px;
+		}
+		#wenben{
+			width:870px;
+			height:24px;
+			float:left;
+			overflow:hidden;
+		}
+		#wenben-1{
+			margin:0 auto;
+			height:24px;
+			color:red;
+			float:right;
+			position:relative;
+			left:300px;
+			width:1200px;
+			font-size:12px;
+		}
+		#bg{
+			position:absolute;
+			top:4px;
+			left:900px;
+		}
+		.box{
+			position:relative;
+			margin:0 auto;
+			height:387px;
+			width:1200px;
+			margin-top:10px;
+			overflow:hidden;
+		}
+		.slider{
+			position:absolute;
+			width:8400px;
+			left:-1200px;
+		}
+		.slide{
+			margin:0px;
+			width:1200px;
+			float: left;
+		}
+		.box>span{
+			display:block;
+			width:30px;
+			height:50px;
+			text-align:center;
+			background:rgb(255,0,0);
+			cursor:pointer;
+			float:left;
+			line-height:50px;
+			opacity:0;
+			color:#fff;
+			font-size:30px
+		}
+		#left{
+			position:relative;
+			top:180px;
+			left:30px;
+			float:left;
+		}
+		#right{
+			position:relative;
+			top:180px;
+			float:right;
+			right:30px;
+		}
+		.nav{
+			position:absolute;
+			left:500px;
+			bottom:15px;
+		}
+		.nav>li{
+			float:left;
+			height:20px;
+			width:20px;
+			border-radius:50%;
+			margin: 0 10px;
+			cursor:pointer;
+			list-style: none;
+			background:#ccc;
+			color:red;
+			text-align:center;
+			font-size:14px;
+			color:#000;
+		}
+		.nav .active{
+			background-color:red;
+			color:#fff;
+		}
+	</style>
+</head>
+<body>
+	<div id="top">
+		<div id="top-1">
+			<div id="warn"><img src="images/a15.png"></div>
+			<div id="wenben">
+				<div id="wenben-1"><p id="bg">[温馨提示]最近有不少不法分子在网上骗人，请大家注意!!!</p></div>
+			</div>
+		</div>
+	</div>
+	<div class="box" id="box">
+		<div class="slider" id="slider">
+			<div class="slide"><img src="images/b5.png"></div>
+			<div class="slide"><img src="images/b1.png"></div>
+			<div class="slide"><img src="images/b2.png"></div>
+			<div class="slide"><img src="images/b3.png"></div>
+			<div class="slide"><img src="images/b4.png"></div>
+			<div class="slide"><img src="images/b5.png"></div>
+			<div class="slide"><img src="images/b1.png"></div>
+		</div>
+		<span id="left"><</span>
+		<span id="right">></span>
+		<ul class="nav" id="nav">
+			<li class="active">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+		</ul>
+	</div>
+</body>
+<script src="js/animate.js"></script>
+<script type="text/javascript">
+	var box = document.getElementById("box");
+	var navList = document.getElementById("nav").children;
+	var slider = document.getElementById("slider");
+	var left = document.getElementById("left");
+	var right = document.getElementById("right");
+	var bg = document.getElementById("bg");
+	var index = 1;
+	var timer;
+	var i = 0;
+	function lun(){
+		i = i + 6;
+		if(i >= 1190){
+			bg.style.left = "900px";
+			i = 0;
+		}
+		animate(bg,{left:900-i});
+		
+	}
+	setInterval(lun,100);
+	function next(){
+		index++;
+		change();
+		animate(slider,{left:-1200*index},function(){
+			if(index === 6){
+				slider.style.left = "-1200px";
+				index = 1;
+			}
+		});
+	}
+	function pre(){
+		index--;
+		change();
+		animate(slider,{left:-1200*index},function(){
+			if(index === 0){
+				slider.style.left = "-6000px";
+				index = 5;
+			}
+		});
+	}
+	var timer = setInterval(next,3000);
+	box.onmouseover = function(){
+		animate(left,{opacity:50});
+		animate(right,{opacity:50});
+		clearInterval(timer);
+	}
+	box.onmouseout = function(){
+		animate(left,{opacity:0});
+		animate(right,{opacity:0});
+		timer = setInterval(next,3000);
+	}
+	right.onclick = next;
+	left.onclick = pre;
+	for(var i = 0; i < navList.length; i++){
+		navList[i].idx = i;
+		navList[i].onclick = function(){
+			index = this.idx +  1;
+			change();
+			animate(slider,{left:-1200*index});
+		}
+	}
+	function change(){
+		for(var i = 0; i < navList.length; i++){
+			navList[i].className = '';
+		}
+		if(index === 6){
+			navList[0].className = "active";
+		}
+		else if(index === 0){
+			navList[4].className = "active"; 
+		}
+		else{
+			navList[index-1].className = "active";
+		}
+	}
+</script>
+</html>
